@@ -152,8 +152,8 @@ class FedFix(FederatedModel):
 
         # update classifier
         initial_alpha = 1.0
-        decay_rate = 0.001
-        decay_per_epoch = 20
+        decay_rate = 0.002
+        decay_per_epoch = 30
         alpha = initial_alpha - (self.epoch // decay_per_epoch) * decay_rate
         feat_dim, num_classes = self.classifier.ori_M.shape
         new_M = torch.zeros_like(self.classifier.ori_M)

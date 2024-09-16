@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 from utils.logger import CsvWriter
 from collections import Counter
+import random
 
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
@@ -179,7 +180,13 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
     print(result)
 
     print(selected_domain_list)
-    pri_train_loaders, test_loaders = private_dataset.get_data_loaders(selected_domain_list)
+
+    unlabel_rate = args.unlabel_rate
+    total_clients = list(range(args.parti_num))
+    unlabel_clients = random.sample(total_clients, int(unlabel_rate * len(total_clients)))
+    label_clients = list(set(total_clients) - set(unlabel_clients))
+
+    pri_train_loaders, test_loaders = private_dataset.get_data_loaders(label_clients, selected_domain_list)
     model.trainloaders = pri_train_loaders
     if hasattr(model, 'ini'):
         model.ini()

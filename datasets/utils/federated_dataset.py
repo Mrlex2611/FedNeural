@@ -63,6 +63,33 @@ class FederatedDataset:
         pass
 
 
+class UnlabeledDataset(torch.utils.data.Dataset):
+    def __init__(self, data_name, labeled_dataset):
+        self.data_name = data_name
+        self.labeled_dataset = labeled_dataset
+    
+    def __len__(self):
+        return len(self.labeled_dataset)
+    
+    def __getitem__(self, idx):
+        data, _ = self.labeled_dataset[idx]  # ignore label
+        return data
+    
+
+class PseudoLabeledDataset(torch.utils.data.Dataset):
+    def __init__(self, unlabeled_dataset, pseudo_labels):
+        self.unlabeled_dataset = unlabeled_dataset
+        self.pseudo_labels = pseudo_labels
+    
+    def __len__(self):
+        return len(self.unlabeled_dataset)
+    
+    def __getitem__(self, idx):
+        data = self.unlabeled_dataset[idx]
+        pseudo_label = self.pseudo_labels[idx]
+        return data, pseudo_label
+
+
 def partition_label_skew_loaders(train_dataset: datasets, test_dataset: datasets,
                                  setting: FederatedDataset) -> Tuple[list, DataLoader, dict]:
     n_class = setting.N_CLASS
@@ -119,11 +146,9 @@ def partition_pacs_domain_skew_loaders(train_datasets: list, test_datasets: list
         name = train_datasets[i].data_name
         if name not in not_used_index_dict:
             train_dataset = train_datasets[i]
-            # for item in train_dataset:
-            #     print(item)
-            y_train = [label for _, label in train_dataset]
-            not_used_index_dict[name] = np.arange(len(y_train))
-            ini_len_dict[name] = len(y_train)
+            # sample_train = [sample for sample in train_dataset]
+            not_used_index_dict[name] = np.arange(len(train_dataset))
+            ini_len_dict[name] = len(train_dataset)
 
     for index in range(len(train_datasets)):
         name = train_datasets[index].data_name
@@ -138,7 +163,7 @@ def partition_pacs_domain_skew_loaders(train_datasets: list, test_datasets: list
 
         train_sampler = SubsetRandomSampler(selected_idx)
         train_loader = DataLoader(train_dataset,
-                                  batch_size=setting.args.local_batch_size, sampler=train_sampler)
+                                batch_size=setting.args.local_batch_size, sampler=train_sampler)
         setting.train_loaders.append(train_loader)
 
     for index in range(len(test_datasets)):

@@ -2,6 +2,7 @@ import torchvision.transforms as transforms
 from utils.conf import data_path
 from PIL import Image
 from datasets.utils.federated_dataset import FederatedDataset, partition_pacs_domain_skew_loaders
+from datasets.utils.federated_dataset import UnlabeledDataset
 import torch.utils.data as data
 from typing import Tuple
 from datasets.transforms.denormalization import DeNormalize
@@ -139,6 +140,7 @@ class OneDomainDataset(data.Dataset):
         return file_names, labels
 
 
+
 class FedLeaPACS(FederatedDataset):
     NAME = 'fl_pacs'
     # SETTING = 'domain_skew'
@@ -165,7 +167,7 @@ class FedLeaPACS(FederatedDataset):
         return train_dataset, test_dataset
     
 
-    def get_data_loaders(self, selected_domain_list=[]):
+    def get_data_loaders(self, label_clients, selected_domain_list=[]):
         using_list = self.DOMAINS_LIST if len(selected_domain_list) == 0 else selected_domain_list
 
         nor_transform = self.PACS_TRANSFORM
@@ -182,28 +184,19 @@ class FedLeaPACS(FederatedDataset):
 
         train_dataset_map = {}
         for _, domain in enumerate(self.DOMAINS_LIST):
-            # if domain == 'syn':
-            #     train_dataset = ImageFolder_Custom(data_name=domain, root=data_path(), train=True,
-            #                                        transform=nor_transform)
-            # else:
-            #     if domain in ['mnist', 'usps']:
-            #         train_dataset = MyDigits(data_path(), train=True,
-            #                                  download=True, transform=sin_chan_nor_transform, data_name=domain)
-            #     else:
-            #         train_dataset = MyDigits(data_path(), train=True,
-            #                                  download=True, transform=nor_transform, data_name=domain)
-            # train_dataset_list.append(train_dataset)
 
             domain_dataset = OneDomainDataset(data_name=domain, root=data_path(), transform=nor_transform)
             train_dataset, test_dataset = self.train_test_split(domain_dataset)
             test_dataset_list.append(test_dataset)
             train_dataset_map[domain] = train_dataset
         
-        for _, domain in enumerate(using_list):
-            train_dataset_list.append(copy.deepcopy(train_dataset_map[domain]))
+        for i, domain in enumerate(using_list):
+            if i in label_clients:
+                train_dataset_list.append(copy.deepcopy(train_dataset_map[domain]))
+            else:
+                train_dataset_list.append(UnlabeledDataset(data_name=domain, labeled_dataset=train_dataset_map[domain]))
         # traindls为一个list，长度为客户端数，包含所有客户端的dataloader
         traindls, testdls = partition_pacs_domain_skew_loaders(train_dataset_list, test_dataset_list, self)
-        # pdb.set_trace()   # loders没问题
 
         return traindls, testdls
     

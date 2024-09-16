@@ -31,7 +31,7 @@ import datetime
 
 def parse_args():
     parser = ArgumentParser(description='You Only Need Me', allow_abbrev=False)
-    parser.add_argument('--device_id', type=int, default=0, help='The Device Id for Experiment')
+    parser.add_argument('--device_id', type=int, default=1, help='The Device Id for Experiment')
 
     parser.add_argument('--communication_epoch', type=int, default=200, help='The Communication Epoch in Federated Learning')
     parser.add_argument('--local_epoch', type=int, default=5, help='The Local Epoch for each Participant')
@@ -59,6 +59,8 @@ def parse_args():
     parser.add_argument('--reserv_ratio', type=float, default=0.1, help='Reserve ratio for prototypes') 
 
     parser.add_argument('--hidden_size', type=int, default=512, help='Hidden layer dimension in autoencoder')
+
+    parser.add_argument('--unlabel_rate', type=float, default=0.25, help='unlabel client rate')
 
     torch.set_num_threads(4)
     add_management_args(parser)
