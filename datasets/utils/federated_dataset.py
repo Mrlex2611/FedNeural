@@ -77,15 +77,15 @@ class UnlabeledDataset(torch.utils.data.Dataset):
     
 
 class PseudoLabeledDataset(torch.utils.data.Dataset):
-    def __init__(self, unlabeled_dataset, pseudo_labels):
-        self.unlabeled_dataset = unlabeled_dataset
+    def __init__(self, valid_data, pseudo_labels):
+        self.valid_data = valid_data
         self.pseudo_labels = pseudo_labels
     
     def __len__(self):
-        return len(self.unlabeled_dataset)
+        return len(self.valid_data)
     
     def __getitem__(self, idx):
-        data = self.unlabeled_dataset[idx]
+        data = self.valid_data[idx]
         pseudo_label = self.pseudo_labels[idx]
         return data, pseudo_label
 

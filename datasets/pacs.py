@@ -191,10 +191,7 @@ class FedLeaPACS(FederatedDataset):
             train_dataset_map[domain] = train_dataset
         
         for i, domain in enumerate(using_list):
-            if i in label_clients:
-                train_dataset_list.append(copy.deepcopy(train_dataset_map[domain]))
-            else:
-                train_dataset_list.append(UnlabeledDataset(data_name=domain, labeled_dataset=train_dataset_map[domain]))
+            train_dataset_list.append(copy.deepcopy(train_dataset_map[domain]))
         # traindls为一个list，长度为客户端数，包含所有客户端的dataloader
         traindls, testdls = partition_pacs_domain_skew_loaders(train_dataset_list, test_dataset_list, self)
 

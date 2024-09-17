@@ -195,9 +195,15 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
     mean_accs_list = []
 
     Epoch = args.communication_epoch
+    pritrain_epoch = args.pritrain_epoch
     for epoch_index in range(Epoch):
         model.epoch_index = epoch_index
-        if hasattr(model, 'loc_update'):
+        if hasattr(model, 'loc_update_label'):
+            if epoch_index < pritrain_epoch:
+                epoch_loc_loss_dict = model.loc_update_label(pri_train_loaders, label_clients)
+            else:
+                epoch_loc_loss_dict = model.loc_update_all(pri_train_loaders, label_clients, unlabel_clients)
+        elif hasattr(model, 'loc_update'):
             epoch_loc_loss_dict = model.loc_update(pri_train_loaders)
 
         accs = global_evaluate(model, test_loaders, private_dataset.SETTING, private_dataset.NAME)
@@ -211,6 +217,7 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
 
         print('The ' + str(epoch_index) + ' Communcation Accuracy:', str(mean_acc), 'Method:', model.args.model)
         print(accs)
+        print()
         # if epoch_index >= Epoch-1:
         #     tsne_visual(model, test_loaders, private_dataset.SETTING, private_dataset.NAME)
         #     tsne_visual_local(model, test_loaders, args.parti_num, private_dataset.SETTING, private_dataset.NAME)
