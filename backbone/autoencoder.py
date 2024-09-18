@@ -180,48 +180,93 @@ class AECLS(nn.Module):
         return fea
 
 
-class VAECLS(nn.Module):
-    def __init__(self, num_classes: int, hidden_size: int = 1024, name: str = 'mycnn_vae'):
-        super(VAECLS, self).__init__()
+class VAE(nn.Module):
+    def __init__(self, num_classes: int, hidden_size: int = 512, name: str = 'myvae'):
+        super(VAE, self).__init__()
         self.name=name
-        self.z_dim = hidden_size // 2   # 实际特征维度为hidden_size的一半，因为hidden_size中一半为mu一半为sigma
-        self.encoder = CNN_encoder_simple(dim_out=hidden_size)
-        self.semantic_branch = nn.Linear(hidden_size, hidden_size)
-        self.cls = nn.Linear(self.z_dim, num_classes)
-
-        self.r_mu = nn.Parameter(torch.zeros(num_classes, self.z_dim))
-        self.r_sigma = nn.Parameter(torch.ones(num_classes, self.z_dim))
-        self.C = nn.Parameter(torch.ones([]))
+        self.proto = {}
+        if name == 'myvae':
+            self.encoder = CNN_encoder_simple(dim_out=hidden_size)
+            dim_in = hidden_size
+        elif name == 'myvae_3':
+            self.encoder = CNN_encoder(dim_out=hidden_size)
+        self.z_dim = hidden_size
+        self.mu_s = nn.Linear(hidden_size, hidden_size)
+        self.log_sigma_s = nn.Linear(hidden_size, hidden_size)
+        self.mu_d = nn.Linear(hidden_size, hidden_size)
+        self.log_sigma_d = nn.Linear(hidden_size, hidden_size)
+        self.mu_decoder = nn.Linear(2*hidden_size, 32*32*3)
     
-    def featurize(self,x,num_samples=1,return_dist=False):
-        z_params = self.encoder(x)
-        z_params = self.semantic_branch(z_params)
-        z_mu = z_params[:,:self.z_dim]
-        z_sigma = F.softplus(z_params[:,self.z_dim:])
-        z_dist = distributions.Independent(distributions.normal.Normal(z_mu,z_sigma),1)
-        z = z_dist.rsample([num_samples]).view([-1,self.z_dim])
+    def featurize_s(self,x,num_samples=1,return_dist=False):
+        x = self.encoder(x)
+        mu = self.mu_s(x)
+        log_sigma = self.log_sigma_s(x)
+        sigma = torch.exp(log_sigma)
+        # 采样，获取采样数据
+        eps = torch.randn_like(sigma)  #eps: bs,latent_size
+        z = mu + eps*sigma
+
+        if return_dist:
+            return z, mu, sigma
+        else:
+            return z
+
+    def featurize_d(self,x,num_samples=1,return_dist=False):
+        x = self.encoder(x)
+        mu = self.mu_d(x)
+        log_sigma = self.log_sigma_d(x)
+        sigma = torch.exp(log_sigma)
+        # 采样，获取采样数据
+        eps = torch.randn_like(sigma)  #eps: bs,latent_size
+        z = mu + eps*sigma
         
         if return_dist:
-            return z, (z_mu,z_sigma)
+            return z, mu, sigma
         else:
             return z
     
     def semantic_feature(self, x):
-        fea = self.featurize(x)
-        return fea
+        fea, mu_s, sigma_s = self.featurize_s(x, return_dist=True)
+        return mu_s
+
+    def forward(self, x):
+        z1, mu_s, sigma_s = self.featurize_s(x, return_dist=True)
+        z2, mu_d, sigma_d = self.featurize_d(x, return_dist=True)
+        z3 = torch.cat((z1, z2), dim=1)
+        x_ = self.mu_decoder(z3)
+        x = F.interpolate(x, size=(32, 32))
+        return x.reshape(x.size(0), -1), x_, mu_s, sigma_s, mu_d, sigma_d
+
+
+class VAECLS(nn.Module):
+    def __init__(self, num_classes: int, hidden_size: int = 512, name: str = 'mycnn_vae'):
+        super(VAECLS, self).__init__()
+        self.name=name
+        self.z_dim = hidden_size
+        if name == 'mycnn_vae':
+            self.encoder = CNN_encoder_simple(dim_out=hidden_size)
+            dim_in = hidden_size
+        elif name == 'mycnn_vae_3':
+            self.encoder = CNN_encoder(dim_out=hidden_size)
+        self.mu_s = nn.Linear(hidden_size, hidden_size)
+        self.log_sigma_s = nn.Linear(hidden_size, hidden_size)
     
-    def features(self, x):
-        fea = self.featurize(x)
-        return fea
-    
-    def classifier(self, fea):
-        out = self.cls(fea)
-        return out
+    def featurize(self,x,num_samples=1,return_dist=False):
+        x = self.encoder(x)
+        mu = self.mu_s(x)
+        log_sigma = self.log_sigma_s(x)
+        sigma = torch.exp(log_sigma)
+        eps = torch.randn_like(sigma)  #eps: bs,latent_size
+        z = mu + eps * sigma
+
+        if return_dist:
+            return z, mu, sigma
+        else:
+            return mu
 
     def forward(self, x):
         fea = self.featurize(x)
-        out = self.cls(fea)
-        return out
+        return fea
 
 
 def autoencoder(nclasses: int):
@@ -231,4 +276,10 @@ def mycnn(nclasses: int):
     return AECLS(nclasses)
 
 def mycnn_vae(nclasses: int):
+    return VAECLS(nclasses)
+
+def myvae(nclasses: int):
+    return VAE(nclasses, name='myvae')
+
+def myvae_cls(nclasses: int):
     return VAECLS(nclasses)

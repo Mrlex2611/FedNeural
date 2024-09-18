@@ -9,7 +9,7 @@ from datasets.transforms.denormalization import DeNormalize
 from backbone.ResNet import resnet10, resnet12, resnet18
 from backbone.efficientnet import EfficientNetB0
 from backbone.mobilnet_v2 import MobileNetV2
-from backbone.autoencoder import autoencoder, mycnn, mycnn_vae
+from backbone.autoencoder import autoencoder, mycnn, myvae
 from torchvision.datasets import MNIST, SVHN, ImageFolder, DatasetFolder, USPS
 from torch.utils.data import random_split
 from PIL import Image
@@ -211,7 +211,7 @@ class FedLeaPACS(FederatedDataset):
         if names_list == None:
             for j in range(parti_num):
                 # 修改fedavg等算法时，此处要修改，根据情况选择autoencoder还是cnn
-                nets_list.append(mycnn(FedLeaPACS.N_CLASS))
+                nets_list.append(myvae(FedLeaPACS.N_CLASS))
         else:
             for j in range(parti_num):
                 net_name = names_list[j]

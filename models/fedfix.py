@@ -8,6 +8,7 @@ from utils.util import dot_loss
 from models.utils.federated_model import FederatedModel
 from datasets.pacs import FedLeaPACS
 from datasets.utils.federated_dataset import PseudoLabeledDataset
+from backbone.autoencoder import mycnn, myvae, myvae_cls
 from backbone.ResNet import Classifier, ETF_Classifier
 from torch.utils.data import DataLoader
 from collections import defaultdict
@@ -27,7 +28,8 @@ class FedFix(FederatedModel):
         self.epoch = 0
 
     def ini(self):
-        self.global_net = copy.deepcopy(self.nets_list[0])
+        # self.global_net = copy.deepcopy(self.nets_list[0])
+        self.global_net = myvae_cls(self.dataset.N_CLASS)
         global_w = self.nets_list[0].state_dict()
         for _,net in enumerate(self.nets_list):
             net.load_state_dict(global_w)
@@ -107,7 +109,7 @@ class FedFix(FederatedModel):
             valid_images = torch.cat(valid_images)
             valid_labels = torch.cat(valid_labels)
         pseudo_labeled_dataset = PseudoLabeledDataset(valid_images, valid_labels)
-        pseudo_labeled_dataloader = DataLoader(pseudo_labeled_dataset, batch_size=self.dataset.args.local_batch_size, shuffle=True)
+        pseudo_labeled_dataloader = DataLoader(pseudo_labeled_dataset, batch_size=self.args.local_batch_size, shuffle=True)
         priloader_list[unlabel_client] = pseudo_labeled_dataloader
 
 
@@ -115,18 +117,27 @@ class FedFix(FederatedModel):
         net = net.to(self.device)
         net.train()
         optimizer = optim.SGD(net.parameters(), lr=self.local_lr, momentum=0.9, weight_decay=1e-5)
-        criterion = nn.CrossEntropyLoss()
-        criterion.to(self.device)
+        criterion = nn.CrossEntropyLoss().to(self.device)
+        criterion_mse = nn.MSELoss().to(self.device)
+        criterion_kld = lambda mu,sigma: -0.5 * torch.sum(1 + torch.log(sigma**2) - mu.pow(2) - sigma**2).to(self.device)
         # criterion = 'reg_dot_loss'
         iterator = tqdm(range(self.local_epoch))
         for _ in iterator:
             for batch_idx, (images, labels) in enumerate(train_loader):
                 images = images.to(self.device)
                 labels = labels.to(self.device)
-                feat = net(images)
-                feat = self.classifier(feat)
+
+                x, x_, mu_s, sigma_s, mu_d, sigma_d = net(images)
+                feat = self.classifier(mu_s)
                 output = torch.matmul(feat, cur_M)
-                loss = criterion(output, labels)
+
+                # main task loss
+                loss_cls = criterion(output, labels)
+                # mi loss
+                lamda = 1e-3
+                loss_mi = lamda * criterion_kld(mu_s, sigma_s) + lamda * criterion_kld(mu_d, sigma_d) + 0.5 * criterion_mse(x, x_)
+                loss = loss_cls + 0.01 * loss_mi
+
                 # with torch.no_grad():
                 #     feat_nograd = feat.detach()
                 #     H_length = torch.clamp(torch.sqrt(torch.sum(feat_nograd ** 2, dim=1, keepdims=False)), 1e-8)
@@ -134,7 +145,7 @@ class FedFix(FederatedModel):
 
                 optimizer.zero_grad()
                 loss.backward()
-                iterator.desc = "Local Pariticipant %d loss = %0.3f" % (index,loss)
+                iterator.desc = "Local Pariticipant %d loss = %0.3f, loss_cls = %0.3f, loss_mi = %0.3f" % (index,loss,loss_cls,loss_mi)
                 optimizer.step()
         
 
@@ -145,7 +156,7 @@ class FedFix(FederatedModel):
         for data, labels in train_loader:
             data = data.to(self.device)
             labels = labels.to(self.device)
-            representations = net(data)
+            representations = net.semantic_feature(data)
 
             # 累加每个类别的表征和计数
             for label, representation in zip(labels, representations):

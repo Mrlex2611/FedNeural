@@ -17,7 +17,7 @@ import os
 
 def global_evaluate(model: FederatedModel, test_dl: DataLoader, setting: str, name: str) -> Tuple[list, list]:
     accs = []
-    net = model.global_net
+    net = model.global_net.to(model.device)
     classifier = model.classifier
     cur_M = classifier.ori_M
     status = net.training
