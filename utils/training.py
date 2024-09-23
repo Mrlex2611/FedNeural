@@ -3,6 +3,7 @@ import torch
 from argparse import Namespace
 from models.utils.federated_model import FederatedModel
 from datasets.utils.federated_dataset import FederatedDataset
+from utils.util import sample_unlabel_clients
 from typing import Tuple
 from torch.utils.data import DataLoader
 import numpy as np
@@ -19,7 +20,6 @@ def global_evaluate(model: FederatedModel, test_dl: DataLoader, setting: str, na
     accs = []
     net = model.global_net.to(model.device)
     classifier = model.classifier
-    cur_M = classifier.ori_M
     status = net.training
     net.eval()
     for j, dl in enumerate(test_dl):
@@ -28,8 +28,9 @@ def global_evaluate(model: FederatedModel, test_dl: DataLoader, setting: str, na
             with torch.no_grad():
                 images, labels = images.to(model.device), labels.to(model.device)
                 feat = net(images)
-                feat = model.classifier(feat)
-                outputs = torch.matmul(feat, cur_M)
+                outputs = model.classifier(feat)
+                if model.NAME in ['fedfix']:
+                    outputs = torch.matmul(outputs, classifier.ori_M)
 
                 _, max5 = torch.topk(outputs, 5, dim=-1)
                 labels = labels.view(-1, 1)
@@ -165,8 +166,9 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
         # selected_domain_dict = {'photo': 1, 'art_painting': 2, 'cartoon': 3, 'sketch': 4}
         # selected_domain_dict = {'photo': 3, 'art_painting': 4, 'cartoon': 1, 'sketch': 2}
         # selected_domain_dict = {'photo': 2, 'art_painting': 2, 'cartoon': 2, 'sketch': 2}
-        selected_domain_dict = {'photo': 1, 'art_painting': 1, 'cartoon': 1, 'sketch': 1}
+        # selected_domain_dict = {'photo': 1, 'art_painting': 1, 'cartoon': 1, 'sketch': 1}
         # selected_domain_dict = {'Art': 1, 'Clipart': 3, 'Product': 4, 'RealWorld': 2}  # for office home
+        selected_domain_dict = args.selected_domain_dict
 
         selected_domain_list = []
         for k in selected_domain_dict:
@@ -183,8 +185,11 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
 
     unlabel_rate = args.unlabel_rate
     total_clients = list(range(args.parti_num))
-    unlabel_clients = random.sample(total_clients, int(unlabel_rate * len(total_clients)))
+    # unlabel_clients = random.sample(total_clients, int(unlabel_rate * len(total_clients)))
+    unlabel_clients = sample_unlabel_clients(selected_domain_list, unlabel_rate)
     label_clients = list(set(total_clients) - set(unlabel_clients))
+    print(f'label clients: {label_clients}')
+    print(f'unlabel clients: {unlabel_clients}')
 
     pri_train_loaders, test_loaders = private_dataset.get_data_loaders(label_clients, selected_domain_list)
     model.trainloaders = pri_train_loaders
@@ -198,7 +203,7 @@ def train(model: FederatedModel, private_dataset: FederatedDataset,
     pritrain_epoch = args.pritrain_epoch
     for epoch_index in range(Epoch):
         model.epoch_index = epoch_index
-        if hasattr(model, 'loc_update_label'):
+        if hasattr(model, 'loc_update_all'):
             if epoch_index < pritrain_epoch:
                 epoch_loc_loss_dict = model.loc_update_label(pri_train_loaders, label_clients)
             else:

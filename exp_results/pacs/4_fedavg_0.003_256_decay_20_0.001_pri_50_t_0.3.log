@@ -1,0 +1,19 @@
+nohup: ignoring input
+fedavg_10_fl_pacs_200_5
+Counter({'art_painting': 4, 'photo': 3, 'sketch': 2, 'cartoon': 1})
+['photo' 'sketch' 'art_painting' 'sketch' 'photo' 'art_painting' 'cartoon'
+ 'art_painting' 'photo' 'art_painting']
+label clients: [0, 1, 6, 7, 8, 9]
+unlabel clients: [4, 3, 2, 5]
+Traceback (most recent call last):
+  File "/home/laiyy/code/FedNeural/main.py", line 104, in <module>
+    main()
+  File "/home/laiyy/code/FedNeural/main.py", line 100, in main
+    train(model, priv_dataset, args)
+  File "/home/laiyy/code/FedNeural/utils/training.py", line 208, in train
+    epoch_loc_loss_dict = model.loc_update_label(pri_train_loaders, label_clients)
+  File "/home/laiyy/code/FedNeural/models/fedavg.py", line 50, in loc_update_label
+    cur_M = self.classifier.ori_M
+  File "/home/laiyy/anaconda3/envs/torch/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1130, in __getattr__
+    raise AttributeError("'{}' object has no attribute '{}'".format(
+AttributeError: 'Classifier' object has no attribute 'ori_M'

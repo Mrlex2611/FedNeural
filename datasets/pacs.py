@@ -12,6 +12,7 @@ from backbone.mobilnet_v2 import MobileNetV2
 from backbone.autoencoder import autoencoder, mycnn, myvae
 from torchvision.datasets import MNIST, SVHN, ImageFolder, DatasetFolder, USPS
 from torch.utils.data import random_split
+from argparse import Namespace
 from PIL import Image
 import copy
 import os
@@ -157,6 +158,13 @@ class FedLeaPACS(FederatedDataset):
                             (0.229, 0.224, 0.225))
     ])
 
+
+    def __init__(self, args: Namespace) -> None:
+        super().__init__(args)
+        assert(FedLeaPACS.percent_dict.keys() == args.selected_domain_dict.keys())
+        for key in FedLeaPACS.percent_dict:
+            FedLeaPACS.percent_dict[key] = 1 / args.selected_domain_dict[key]
+
     
     def train_test_split(self, domain_dataset):
         train_size = int(0.7 * len(domain_dataset))
@@ -211,7 +219,7 @@ class FedLeaPACS(FederatedDataset):
         if names_list == None:
             for j in range(parti_num):
                 # 修改fedavg等算法时，此处要修改，根据情况选择autoencoder还是cnn
-                nets_list.append(myvae(FedLeaPACS.N_CLASS))
+                nets_list.append(mycnn(FedLeaPACS.N_CLASS))
         else:
             for j in range(parti_num):
                 net_name = names_list[j]

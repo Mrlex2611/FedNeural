@@ -31,16 +31,16 @@ import datetime
 
 def parse_args():
     parser = ArgumentParser(description='You Only Need Me', allow_abbrev=False)
-    parser.add_argument('--device_id', type=int, default=0, help='The Device Id for Experiment')
+    parser.add_argument('--device_id', type=int, default=1, help='The Device Id for Experiment')
 
     parser.add_argument('--communication_epoch', type=int, default=200, help='The Communication Epoch in Federated Learning')
     parser.add_argument('--local_epoch', type=int, default=5, help='The Local Epoch for each Participant')
-    parser.add_argument('--parti_num', type=int, default=4, help='The Number for Participants')
+    parser.add_argument('--parti_num', type=int, default=10, help='The Number for Participants')
 
     parser.add_argument('--seed', type=int, default=0, help='The random seed.')
     parser.add_argument('--rand_dataset', type=bool, default=False, help='The random seed.')
 
-    parser.add_argument('--model', type=str, default='fedfix',  # moon fedinfonce
+    parser.add_argument('--model', type=str, default='fedavg',  # moon fedinfonce
                         help='Model name.', choices=get_all_models())
     parser.add_argument('--structure', type=str, default='homogeneity')
     parser.add_argument('--dataset', type=str, default='fl_pacs',  # fl_officecaltech fl_digits
@@ -60,9 +60,9 @@ def parse_args():
 
     parser.add_argument('--hidden_size', type=int, default=512, help='Hidden layer dimension in autoencoder')
 
-    parser.add_argument('--unlabel_rate', type=float, default=0.25, help='unlabel client rate')
+    parser.add_argument('--unlabel_rate', type=float, default=0.5, help='unlabel client rate')
     parser.add_argument('--pritrain_epoch', type=int, default=50, help='pritrain epochs on labeled data')
-    parser.add_argument('--pseudo_label_threshold', type=float, default=0.2, help='probability threshold when assigning pseudo label')
+    parser.add_argument('--pseudo_label_threshold', type=float, default=0.3, help='probability threshold when assigning pseudo label')
 
     torch.set_num_threads(4)
     add_management_args(parser)
@@ -85,6 +85,7 @@ def main(args=None):
     args.conf_jobnum = str(uuid.uuid4())
     args.conf_timestamp = str(datetime.datetime.now())
     args.conf_host = socket.gethostname()
+    args.selected_domain_dict = {'photo': 3, 'art_painting': 4, 'cartoon': 1, 'sketch': 2}
 
     priv_dataset = get_prive_dataset(args)
 

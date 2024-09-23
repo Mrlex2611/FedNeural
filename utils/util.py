@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import random
+from collections import defaultdict
 
 import torch
 
@@ -58,3 +60,16 @@ def dot_loss(output, label, cur_M, classifier, criterion, H_length, reg_lam=0):
             loss = loss + reg_Eh_l2*reg_lam
 
     return loss
+
+def sample_unlabel_clients(selected_domain_list, sample_ratio=0.2):
+    domain_indices = defaultdict(list)
+    for idx, domain in enumerate(selected_domain_list):
+        domain_indices[domain].append(idx)
+    
+    # sample a certain ratio of idxs from each doamin
+    sampled_indices = []
+    for indices in domain_indices.values():
+        sample_count = int(len(indices) * sample_ratio) if indices else 0
+        sampled_indices.extend(random.sample(indices, sample_count))
+    
+    return sampled_indices

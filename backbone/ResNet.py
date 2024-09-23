@@ -80,6 +80,7 @@ class ResNet(nn.Module):
         """
         super(ResNet, self).__init__()
         self.name = name
+        self.proto = {}
         self.in_planes = nf
         self.block = block
         self.num_classes = num_classes
@@ -106,7 +107,7 @@ class ResNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(nf * 8 * block.expansion, 512)
         )
-        self.apply(_weights_init)
+        # self.apply(_weights_init)
 
     def _make_layer(self, block: BasicBlock, planes: int,
                     num_blocks: int, stride: int) -> nn.Module:
@@ -143,6 +144,7 @@ class ResNet(nn.Module):
         return out
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = F.interpolate(x, size=(32, 32))  # 将输入图像压缩到32x32
         out = relu(self.bn1(self.conv1(x)))  # 64, 32, 32
         if hasattr(self, 'maxpool'):
             out = self.maxpool(out)
@@ -161,9 +163,9 @@ class Classifier(nn.Module):
         super(Classifier, self).__init__()
         self.fc = nn.Linear(feat_in, num_classes)
 
-        self.apply(_weights_init)
-        self.fc.weight.requires_grad = False
-        self.fc.bias.requires_grad = False
+        # self.apply(_weights_init)
+        # self.fc.weight.requires_grad = False
+        # self.fc.bias.requires_grad = False
 
     def forward(self, x):
         x = self.fc(x)
