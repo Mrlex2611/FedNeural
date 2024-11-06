@@ -11,5 +11,8 @@ for model in get_all_models():
     class_name = {x.lower():x for x in mod.__dir__()}[model.replace('_', '')]
     names[model] = getattr(mod, class_name)
 
-def get_model(nets_list,args, transform):
-    return names[args.model](nets_list,args,transform)
+def get_model(nets_list,args, transform, warmup_pth=None):
+    if warmup_pth is None:
+        return names[args.model](nets_list,args,transform)
+    else:
+        return names[args.model](nets_list,args,transform,warmup_pth)

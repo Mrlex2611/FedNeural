@@ -29,21 +29,23 @@ import uuid
 import datetime
 
 
+
+
 def parse_args():
     parser = ArgumentParser(description='You Only Need Me', allow_abbrev=False)
-    parser.add_argument('--device_id', type=int, default=1, help='The Device Id for Experiment')
+    parser.add_argument('--device_id', type=int, default=3, help='The Device Id for Experiment')
 
-    parser.add_argument('--communication_epoch', type=int, default=200, help='The Communication Epoch in Federated Learning')
+    parser.add_argument('--communication_epoch', type=int, default=100, help='The Communication Epoch in Federated Learning')
     parser.add_argument('--local_epoch', type=int, default=5, help='The Local Epoch for each Participant')
     parser.add_argument('--parti_num', type=int, default=10, help='The Number for Participants')
 
     parser.add_argument('--seed', type=int, default=0, help='The random seed.')
     parser.add_argument('--rand_dataset', type=bool, default=False, help='The random seed.')
 
-    parser.add_argument('--model', type=str, default='fedavg',  # moon fedinfonce
+    parser.add_argument('--model', type=str, default='fedfix',  # moon fedinfonce
                         help='Model name.', choices=get_all_models())
     parser.add_argument('--structure', type=str, default='homogeneity')
-    parser.add_argument('--dataset', type=str, default='fl_pacs',  # fl_officecaltech fl_digits
+    parser.add_argument('--dataset', type=str, default='fl_cifar10',  # fl_officecaltech fl_digits
                         choices=DATASET_NAMES, help='Which scenario to perform experiments on.')
 
     parser.add_argument('--pri_aug', type=str, default='weak',  # weak strong
@@ -56,13 +58,16 @@ def parse_args():
     parser.add_argument('--T', type=float, default=0.05, help='The Knowledge distillation temperature')
     parser.add_argument('--weight', type=int, default=1, help='The Wegith for the distillation loss')
 
-    parser.add_argument('--reserv_ratio', type=float, default=0.1, help='Reserve ratio for prototypes') 
+    parser.add_argument('--reserv_ratio', type=float, default=0.1, help='Reserve ratio for prototypes')
 
     parser.add_argument('--hidden_size', type=int, default=512, help='Hidden layer dimension in autoencoder')
 
-    parser.add_argument('--unlabel_rate', type=float, default=0.5, help='unlabel client rate')
-    parser.add_argument('--pritrain_epoch', type=int, default=50, help='pritrain epochs on labeled data')
-    parser.add_argument('--pseudo_label_threshold', type=float, default=0.3, help='probability threshold when assigning pseudo label')
+    parser.add_argument('--unlabel_rate', type=float, default=0.9, help='unlabel client rate')
+    parser.add_argument('--beta', type=float, default=10, help='dirichlet distribution parameter')
+    parser.add_argument('--pritrain_epoch', type=int, default=0, help='pritrain epochs on labeled data')
+    parser.add_argument('--pseudo_label_threshold', type=float, default=0.45, help='probability threshold when assigning pseudo label')
+    parser.add_argument('--ema_decay', type=float, default=0.999, help='ema_decay')
+    parser.add_argument("--max_grad_norm", dest="max_grad_norm", type=float, default=5, help="max gradient norm allowed (used for gradient clipping)")
 
     torch.set_num_threads(4)
     add_management_args(parser)
@@ -85,13 +90,13 @@ def main(args=None):
     args.conf_jobnum = str(uuid.uuid4())
     args.conf_timestamp = str(datetime.datetime.now())
     args.conf_host = socket.gethostname()
-    args.selected_domain_dict = {'photo': 3, 'art_painting': 4, 'cartoon': 1, 'sketch': 2}
+    args.selected_domain_dict = {'photo': 3, 'art_painting': 3, 'cartoon': 3, 'sketch': 3}
 
     priv_dataset = get_prive_dataset(args)
 
-    backbones_list = priv_dataset.get_backbone(args.parti_num, None)
+    backbones_list = priv_dataset.get_backbone(args, None)
 
-    model = get_model(backbones_list, args, priv_dataset.get_transform())
+    model = get_model(backbones_list, args, priv_dataset.get_transform(), warmup_pth='warmup/cifar10_fedfix_resnet18.pth')
     args.arch = model.nets_list[0].name
 
     print('{}_{}_{}_{}_{}'.format(args.model, args.parti_num, args.dataset, args.communication_epoch, args.local_epoch))

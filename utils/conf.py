@@ -8,7 +8,7 @@ def get_device(device_id) -> torch.device:
 
 
 def data_path() -> str:
-    return './datasets/dataset/pacs/'
+    return './datasets/dataset/cifar10/'
 
 
 def base_path() -> str:

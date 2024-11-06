@@ -4,6 +4,7 @@ import pdb
 from torch import nn as nn
 from torchvision.transforms import transforms
 from torch.utils.data import DataLoader, SubsetRandomSampler
+from torch import nn, Tensor
 from typing import Tuple
 from torchvision import datasets
 import numpy as np
@@ -90,6 +91,21 @@ class PseudoLabeledDataset(torch.utils.data.Dataset):
         return data, pseudo_label
 
 
+class AugmentDataset(torch.utils.data.Dataset):
+    def __init__(self, data, labels, transform):
+        self.data = data
+        self.labels = labels
+        self.transform = transform
+    
+    def __len__(self):
+        return len(self.labels)
+    
+    def __getitem__(self, idx):
+        data = self.transform(self.data[idx])
+        labels = self.labels[idx]
+        return data, labels
+
+
 def partition_label_skew_loaders(train_dataset: datasets, test_dataset: datasets,
                                  setting: FederatedDataset) -> Tuple[list, DataLoader, dict]:
     n_class = setting.N_CLASS
@@ -127,12 +143,12 @@ def partition_label_skew_loaders(train_dataset: datasets, test_dataset: datasets
     for j in range(n_participants):
         train_sampler = SubsetRandomSampler(net_dataidx_map[j])
         train_loader = DataLoader(train_dataset,
-                                  batch_size=setting.args.local_batch_size, sampler=train_sampler, num_workers=4, drop_last=True)
+                                  batch_size=setting.args.local_batch_size, sampler=train_sampler, drop_last=True)
         setting.train_loaders.append(train_loader)
 
     test_loader = DataLoader(test_dataset,
-                             batch_size=setting.args.local_batch_size, shuffle=False, num_workers=4)
-    setting.test_loader = test_loader
+                             batch_size=setting.args.local_batch_size, shuffle=False)
+    setting.test_loader = [test_loader]
 
     return setting.train_loaders, setting.test_loader, net_cls_counts
 
@@ -363,3 +379,18 @@ def record_net_data_stats(y_train, net_dataidx_map):
     print('std:', np.std(data_list))
     print('Data statistics: %s' % str(net_cls_counts))
     return net_cls_counts
+
+
+class TransformTwice:
+    def __init__(self, transform):
+        self.transform = transform
+
+    def __call__(self, inp):
+        out1 = self.transform(inp)
+        out2 = self.transform(inp)
+        return [inp, out1, out2]
+
+
+def sharpen(x: Tensor, t=0.5) -> Tensor:
+    sharpened_x = x ** (1 / t)
+    return sharpened_x / sharpened_x.sum(dim=1, keepdim=True)

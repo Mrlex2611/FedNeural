@@ -8,6 +8,7 @@ from models.utils.federated_model import FederatedModel
 from backbone.ResNet import Classifier, ETF_Classifier
 from datasets.utils.federated_dataset import PseudoLabeledDataset
 from datasets.pacs import FedLeaPACS
+from datasets.cifar10 import FedLeaCifar10
 from torch.utils.data import DataLoader
 import torch
 import torch.nn.functional as F
@@ -19,7 +20,7 @@ class FedAvG(FederatedModel):
     def __init__(self, nets_list,args, transform):
         super(FedAvG, self).__init__(nets_list,args,transform)
         self.unlabel_loader_truth = {}
-        self.dataset = FedLeaPACS
+        self.dataset = FedLeaCifar10
         self.epoch = 0
 
     def ini(self):
@@ -27,7 +28,6 @@ class FedAvG(FederatedModel):
         global_w = self.nets_list[0].state_dict()
         for _,net in enumerate(self.nets_list):
             net.load_state_dict(global_w)
-        self.classifier = Classifier(feat_in=512, num_classes=self.dataset.N_CLASS).to(self.device)
 
     def loc_update(self,priloader_list):
         total_clients = list(range(self.args.parti_num))
@@ -47,9 +47,8 @@ class FedAvG(FederatedModel):
         online_clients = label_clients
         self.online_clients = online_clients
 
-        cur_M = self.classifier.ori_M
         for i in online_clients:
-            self._train_net(i,self.nets_list[i], priloader_list[i], cur_M)
+            self._train_net(i,self.nets_list[i], priloader_list[i])
         self.aggregate_nets(None)
         self.epoch += 1
 
@@ -86,8 +85,7 @@ class FedAvG(FederatedModel):
             for batch in self.unlabel_loader_truth[unlabel_client]:
                 images, labels = batch[0], batch[1]
                 images, labels = images.to(self.device), labels.to(self.device)
-                feat = global_net(images)
-                output = self.classifier(feat)
+                output = global_net(images)
                 probabilities = F.softmax(output, dim=1)  # convert to probabilities
                 max_probs, predicted_labels = torch.max(probabilities, dim=1)
 
@@ -125,10 +123,7 @@ class FedAvG(FederatedModel):
     def _train_net(self,index,net,train_loader):
         net = net.to(self.device)
         net.train()
-        optimizer = optim.SGD([
-            {'params': net.parameters()},
-            {'params': self.classifier.parameters()}
-        ], lr=self.local_lr, momentum=0.9, weight_decay=1e-5)
+        optimizer = optim.SGD(net.parameters(), lr=self.local_lr, momentum=0.9, weight_decay=1e-5)
         criterion = nn.CrossEntropyLoss()
         criterion.to(self.device)
         iterator = tqdm(range(self.local_epoch))
@@ -136,8 +131,7 @@ class FedAvG(FederatedModel):
             for batch_idx, (images, labels) in enumerate(train_loader):
                 images = images.to(self.device)
                 labels = labels.to(self.device)
-                feat = net(images)
-                outputs = self.classifier(feat)
+                outputs = net(images)
                 loss = criterion(outputs, labels)
                 optimizer.zero_grad()
                 loss.backward()

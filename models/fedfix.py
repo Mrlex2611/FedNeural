@@ -7,10 +7,12 @@ from utils.args import *
 from utils.util import dot_loss
 from models.utils.federated_model import FederatedModel
 from datasets.pacs import FedLeaPACS
-from datasets.utils.federated_dataset import PseudoLabeledDataset
+from datasets.cifar10 import FedLeaCifar10
+from datasets.utils.federated_dataset import PseudoLabeledDataset, AugmentDataset, TransformTwice, sharpen
 from backbone.autoencoder import mycnn, myvae, myvae_cls
 from backbone.ResNet import Classifier, ETF_Classifier
 from torch.utils.data import DataLoader
+import torchvision.transforms as transforms
 from collections import defaultdict
 import numpy as np
 import torch
@@ -20,17 +22,21 @@ class FedFix(FederatedModel):
     NAME = 'fedfix'
     COMPATIBILITY = ['homogeneity']
 
-    def __init__(self, nets_list,args, transform):
+    def __init__(self, nets_list,args, transform, warmup_pth=None):
         super(FedFix, self).__init__(nets_list,args,transform)
         self.global_proto = {}
         self.unlabel_loader_truth = {}
-        self.dataset = FedLeaPACS
+        self.ema_nets = {}      # save ema model for unlabled clients
+        self.dataset = FedLeaCifar10
+        self.warmup_pth = warmup_pth
         self.epoch = 0
 
     def ini(self):
         self.global_net = copy.deepcopy(self.nets_list[0])
         # self.global_net = myvae_cls(self.dataset.N_CLASS)
-        global_w = self.nets_list[0].state_dict()
+        if self.warmup_pth is not None:
+            self.global_net.load_state_dict(torch.load(self.warmup_pth))
+        global_w = self.global_net.state_dict()
         for _,net in enumerate(self.nets_list):
             net.load_state_dict(global_w)
         self.classifier = ETF_Classifier(feat_in=512, num_classes=self.dataset.N_CLASS).to(self.device)
@@ -39,7 +45,7 @@ class FedFix(FederatedModel):
     def loc_update_label(self,priloader_list,label_clients):
         # total_clients = list(range(self.args.parti_num))
         # online_clients = self.random_state.choice(total_clients,self.online_num,replace=False).tolist()
-        online_clients = label_clients
+        online_clients = label_clients[:]
         self.online_clients = online_clients
 
         cur_M = self.classifier.ori_M
@@ -63,30 +69,71 @@ class FedFix(FederatedModel):
         for i in label_clients:
             self._train_net(i,self.nets_list[i], priloader_list[i], cur_M)
         for i in unlabel_clients:
+            if i not in self.ema_nets:
+                self.ema_nets[i] = copy.deepcopy(self.global_net)
             if self._assign_pseudo_labels(priloader_list, i, cur_M):
                 online_clients.append(i)
-                self._train_net(i,self.nets_list[i], priloader_list[i], cur_M)
+                self._train_net(i,self.nets_list[i], priloader_list[i], cur_M, ema_net=self.ema_nets[i])
+                self.update_ema_variables(self.nets_list[i], self.ema_nets[i], self.args.ema_decay, self.epoch)
         self.online_clients = online_clients[:]
-        self.aggregate_nets(None)
+        self.aggregate_nets(label_clients=label_clients, unlabel_clients=unlabel_clients)
         self.epoch += 1
 
         return  None
     
+
+    def _augment_ema_datasets(self,priloader_list,unlabel_client):
+        input_sz = 32
+        normalize = transforms.Normalize(mean=[0.4914, 0.4822, 0.4465],
+                                         std=[0.247, 0.243, 0.261])
+        weak_trans = transforms.Compose([
+                transforms.RandomCrop(size=(input_sz, input_sz)),
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.ToTensor(),
+                normalize
+            ])
+        loader = self.unlabel_loader_truth[unlabel_client]
+        total_data, total_labels = [], []
+        for data, labels in loader:
+            total_data.append(data)
+            total_labels.append(labels)
+        total_data = torch.cat(total_data)
+        total_labels = torch.cat(total_labels)
+        augment_dataset = AugmentDataset(total_data, total_labels, TransformTwice(weak_trans))
+        augment_dataloader = DataLoader(augment_dataset, batch_size=self.args.local_batch_size, shuffle=True)
+        priloader_list[unlabel_client] = augment_dataloader
+    
+
     def _assign_pseudo_labels(self,priloader_list,unlabel_client,cur_M):
-        global_net = self.global_net.to(self.device)
+        input_sz = 32
+        normalize = transforms.Normalize(mean=[0.4914, 0.4822, 0.4465],
+                                         std=[0.247, 0.243, 0.261])
+        weak_trans = transforms.Compose([
+                transforms.ToPILImage(),
+                transforms.RandomCrop(size=(input_sz, input_sz)),
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.ToTensor(),
+                normalize
+            ])
+
+        ema_net = self.ema_nets[unlabel_client].to(self.device)
         valid_images = []
         valid_labels = []
+        total_images, total_labels = [], []             # save original images and pesudo labels (without consider confidence, all the pesudo labels)
         threshold = self.args.pseudo_label_threshold
         total, correct = 0, 0
         with torch.no_grad():
             for batch in self.unlabel_loader_truth[unlabel_client]:
                 images, labels = batch[0], batch[1]
                 images, labels = images.to(self.device), labels.to(self.device)
-                feat = global_net(images)
+                feat = ema_net(images)
                 feat = self.classifier(feat)
                 output = torch.matmul(feat, cur_M)
                 probabilities = F.softmax(output, dim=1)  # convert to probabilities
-                max_probs, predicted_labels = torch.max(probabilities, dim=1)
+                sharpened = sharpen(probabilities)
+                max_probs, predicted_labels = torch.max(sharpened, dim=1)
+                total_images.append(images)
+                total_labels.append(predicted_labels)
 
                 # keep confident samples
                 mask = max_probs > threshold
@@ -102,6 +149,11 @@ class FedFix(FederatedModel):
                     valid_images.append(pseudo_images)
                     valid_labels.append(pseudo_labels)
         
+        # total_images, total_labels = torch.cat(total_images), torch.cat(total_labels)
+        # augment_dataset = AugmentDataset(total_images, total_labels, TransformTwice(weak_trans))
+        # augment_dataloader = DataLoader(augment_dataset, batch_size=self.args.local_batch_size, shuffle=True)
+        # priloader_list[unlabel_client] = augment_dataloader
+
         if total <= 1:
             print(f'Client {unlabel_client} total samples number: {len(self.unlabel_loader_truth[unlabel_client].sampler)}')
             print(f'Pseudo samples number: {total}')
@@ -114,35 +166,47 @@ class FedFix(FederatedModel):
             if valid_labels:
                 valid_images = torch.cat(valid_images)
                 valid_labels = torch.cat(valid_labels)
-            pseudo_labeled_dataset = PseudoLabeledDataset(valid_images, valid_labels)
+            
+            pseudo_labeled_dataset = AugmentDataset(valid_images, valid_labels, TransformTwice(weak_trans))
             pseudo_labeled_dataloader = DataLoader(pseudo_labeled_dataset, batch_size=self.args.local_batch_size, shuffle=True)
             priloader_list[unlabel_client] = pseudo_labeled_dataloader
             return True
 
 
-    def _train_net(self,index,net,train_loader,cur_M):
+    def _train_net(self,index,net,train_loader,cur_M,ema_net=None):
         net = net.to(self.device)
         net.train()
         optimizer = optim.SGD(net.parameters(), lr=self.local_lr, momentum=0.9, weight_decay=1e-5)
         criterion = nn.CrossEntropyLoss().to(self.device)
-        # criterion_mse = nn.MSELoss().to(self.device)
+        criterion_mse = nn.MSELoss().to(self.device)
         # criterion_kld = lambda mu,sigma: -0.5 * torch.sum(1 + torch.log(sigma**2) - mu.pow(2) - sigma**2).to(self.device)
         # criterion = 'reg_dot_loss'
         iterator = tqdm(range(self.local_epoch))
         for _ in iterator:
             for batch_idx, (images, labels) in enumerate(train_loader):
-                if images.shape[0] <= 1:    # batch norm in classifier can not handle only one sample in a batch
+                if labels.shape[0] <= 1:    # batch norm in classifier can not handle only one sample in a batch
                     continue
-                images = images.to(self.device)
-                labels = labels.to(self.device)
-
                 # x, x_, mu_s, sigma_s, mu_d, sigma_d = net(images)
-                feat = net(images)
-                feat = self.classifier(feat)
-                output = torch.matmul(feat, cur_M)
+                
+                if ema_net is None:     # labeled client
+                    images = images.to(self.device)
+                    labels = labels.to(self.device)
+                    feat = net(images)
+                    feat = self.classifier(feat)
+                    output = torch.matmul(feat, cur_M)
+                    loss = criterion(output, labels)
+                else:       # unlabeled client, use mean teacher loss
+                    aug_images0, aug_images1 = images[1].to(self.device), images[2].to(self.device)
+                    guess = ema_net(aug_images0)
+                    guess = self.classifier(guess)
+                    guess = F.softmax(torch.matmul(guess, cur_M), dim=1)
+                    sharpened = sharpen(guess)
 
-                # main task loss
-                loss = criterion(output, labels)
+                    feat = net(aug_images1)
+                    feat = self.classifier(feat)
+                    output = F.softmax(torch.matmul(feat, cur_M), dim=1)
+                    loss = criterion_mse(output, sharpened)
+
                 # mi loss
                 # lamda = 1e-3
                 # loss_mi = lamda * criterion_kld(mu_s, sigma_s) + lamda * criterion_kld(mu_d, sigma_d) + 0.5 * criterion_mse(x, x_)
@@ -155,6 +219,7 @@ class FedFix(FederatedModel):
 
                 optimizer.zero_grad()
                 loss.backward()
+                torch.nn.utils.clip_grad_norm_(net.parameters(), max_norm=self.args.max_grad_norm)
                 iterator.desc = "Local Pariticipant %d loss = %0.3f" % (index,loss)
                 optimizer.step()
         
@@ -164,7 +229,10 @@ class FedFix(FederatedModel):
         # 存储每个类别的表征和计数器
         class_representations = defaultdict(lambda: {'sum': 0, 'count': 0})
         for data, labels in train_loader:
-            data = data.to(self.device)
+            if ema_net is None:     # labeled clients
+                data = data.to(self.device)
+            else:       # unlabeled clients
+                data = data[0].to(self.device)      # data[0] is original image, data[1] and data[2] are augmented images
             labels = labels.to(self.device)
             representations = net(data).detach()
 
@@ -181,7 +249,7 @@ class FedFix(FederatedModel):
         net.proto = {label: info['sum'] / info['count'] for label, info in class_representations.items()}
 
 
-    def aggregate_nets(self, freq=None):
+    def aggregate_nets(self, freq=None, label_clients=None, unlabel_clients=None):
         global_net = self.global_net
         nets_list = self.nets_list
 
@@ -189,10 +257,37 @@ class FedFix(FederatedModel):
         global_w = self.global_net.state_dict()
 
         if self.args.averaing == 'weight':
-            online_clients_dataset = [self.trainloaders[online_clients_index].dataset for online_clients_index in online_clients]
-            online_clients_len = [len(dataset) for dataset in online_clients_dataset]
-            online_clients_all = np.sum(online_clients_len)
-            freq = online_clients_len / online_clients_all
+            if label_clients is None:
+                online_clients_sampler = [self.trainloaders[online_clients_index].sampler for online_clients_index in online_clients]
+                online_clients_len = [len(sampler) for sampler in online_clients_sampler]
+                online_clients_all = np.sum(online_clients_len)
+                freq = online_clients_len / online_clients_all
+            else:
+                label_clients_sampler = [self.trainloaders[label_clients_index].sampler for label_clients_index in label_clients]
+                unlabel_clients_sampler = [self.trainloaders[unlabel_clients_index].sampler for unlabel_clients_index in unlabel_clients]
+
+                label_clients_len = [len(sampler) for sampler in label_clients_sampler]
+                unlabel_clients_len = [len(sampler) for sampler in unlabel_clients_sampler]
+
+                label_clients_all = np.sum(label_clients_len)
+                unlabel_clients_all = np.sum(unlabel_clients_len)
+
+                label_clients_weight = 0.5  # total weight of label clients is 0.5
+                unlabel_clients_weight = 0.5  # unlabel clients share the remain 0.5 weight
+
+                label_clients_freq = np.array(label_clients_len) / label_clients_all * label_clients_weight
+                unlabel_clients_freq = np.array(unlabel_clients_len) / unlabel_clients_all * unlabel_clients_weight
+                total_weighted_freq = np.concatenate([label_clients_freq, unlabel_clients_freq])
+
+                # 现在需要根据客户端编号排序频率
+                # 根据 online_clients 顺序将频率映射到正确位置
+                freq = [0] * len(online_clients)
+                for i, client_id in enumerate(online_clients):
+                    if client_id in label_clients:
+                        freq[i] = label_clients_freq[label_clients.index(client_id)]
+                    elif client_id in unlabel_clients:
+                        freq[i] = unlabel_clients_freq[unlabel_clients.index(client_id)]
+
         else:
         # if freq == None:
             parti_num = len(online_clients)
@@ -257,3 +352,10 @@ class FedFix(FederatedModel):
             new_M[:, i] = normalized_vec
         with torch.no_grad():  # 禁止追踪此块的梯度
             self.classifier.ori_M.copy_(new_M)
+    
+
+    # alpha=0.999
+    def update_ema_variables(self, model, ema_model, alpha, global_step):
+        alpha = min(1 - 1 / (global_step + 1), alpha)
+        for ema_param, param in zip(ema_model.parameters(), model.parameters()):
+            ema_param.data.mul_(alpha).add_(param.data, alpha=1 - alpha)

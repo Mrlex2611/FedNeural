@@ -175,9 +175,10 @@ class AECLS(nn.Module):
 
     def forward(self, x):
         fea = self.encoder(x)
-        fea = self.semantic_branch(fea)
-        # out = self.cls(fea)
-        return fea
+        out = self.semantic_branch(fea)
+        if self.name == 'mycnn_cls':
+            out = self.cls(fea)
+        return out
 
 
 class VAE(nn.Module):
@@ -274,6 +275,9 @@ def autoencoder(nclasses: int):
 
 def mycnn(nclasses: int):
     return AECLS(nclasses)
+
+def mycnn_cls(nclasses: int):
+    return AECLS(nclasses, name='mycnn_cls')
 
 def mycnn_vae(nclasses: int):
     return VAECLS(nclasses)

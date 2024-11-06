@@ -86,8 +86,10 @@ class FederatedModel(nn.Module):
         global_w = self.global_net.state_dict()
 
         if self.args.averaing == 'weight':
-            online_clients_dl = [self.trainloaders[online_clients_index] for online_clients_index in online_clients]
-            online_clients_len = [dl.sampler.indices.size for dl in online_clients_dl]
+            # online_clients_dl = [self.trainloaders[online_clients_index] for online_clients_index in online_clients]
+            # online_clients_len = [dl.sampler.indices.size for dl in online_clients_dl]
+            online_clients_sampler = [self.trainloaders[online_clients_index].sampler for online_clients_index in online_clients]
+            online_clients_len = [len(sampler) for sampler in online_clients_sampler]
             online_clients_all = np.sum(online_clients_len)
             freq = online_clients_len / online_clients_all
         else:

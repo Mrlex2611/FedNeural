@@ -61,15 +61,19 @@ def dot_loss(output, label, cur_M, classifier, criterion, H_length, reg_lam=0):
 
     return loss
 
-def sample_unlabel_clients(selected_domain_list, sample_ratio=0.2):
-    domain_indices = defaultdict(list)
-    for idx, domain in enumerate(selected_domain_list):
-        domain_indices[domain].append(idx)
-    
-    # sample a certain ratio of idxs from each doamin
-    sampled_indices = []
-    for indices in domain_indices.values():
-        sample_count = int(len(indices) * sample_ratio) if indices else 0
-        sampled_indices.extend(random.sample(indices, sample_count))
+def sample_unlabel_clients(selected_domain_list, total_clients, sample_ratio=0.9):
+    if selected_domain_list is None:
+        sample_count = int(len(total_clients) * sample_ratio) if total_clients else 0
+        sampled_indices = list(random.sample(total_clients, sample_count))
+    else:
+        domain_indices = defaultdict(list)
+        for idx, domain in enumerate(selected_domain_list):
+            domain_indices[domain].append(idx)
+        
+        # sample a certain ratio of idxs from each doamin
+        sampled_indices = []
+        for indices in domain_indices.values():
+            sample_count = int(len(indices) * sample_ratio) if indices else 0
+            sampled_indices.extend(random.sample(indices, sample_count))
     
     return sampled_indices

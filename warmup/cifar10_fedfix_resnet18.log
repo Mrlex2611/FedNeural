@@ -1,0 +1,209 @@
+nohup: ignoring input
+fedfix_10_fl_cifar10_50_5
+label clients: [7]
+unlabel clients: [6, 9, 0, 2, 4, 3, 5, 1, 8]
+Files already downloaded and verified
+Files already downloaded and verified
+mean: 5000.0
+std: 253.1746432800884
+Data statistics: {0: {0: 492, 1: 542, 2: 266, 3: 487, 4: 420, 5: 505, 6: 665, 7: 755, 8: 490, 9: 711}, 1: {0: 825, 1: 605, 2: 502, 3: 664, 4: 438, 5: 566, 6: 546, 7: 591, 8: 577}, 2: {0: 474, 1: 412, 2: 424, 3: 840, 4: 413, 5: 329, 6: 492, 7: 492, 8: 293, 9: 404}, 3: {0: 386, 1: 655, 2: 673, 3: 431, 4: 438, 5: 569, 6: 563, 7: 379, 8: 727, 9: 573}, 4: {0: 316, 1: 581, 2: 682, 3: 407, 4: 391, 5: 403, 6: 513, 7: 319, 8: 563, 9: 645}, 5: {0: 578, 1: 408, 2: 251, 3: 462, 4: 747, 5: 317, 6: 521, 7: 406, 8: 548, 9: 561}, 6: {0: 434, 1: 434, 2: 562, 3: 588, 4: 532, 5: 596, 6: 434, 7: 437, 8: 483, 9: 459}, 7: {0: 646, 1: 524, 2: 428, 3: 449, 4: 517, 5: 638, 6: 366, 7: 329, 8: 620, 9: 356}, 8: {0: 350, 1: 544, 2: 603, 3: 370, 4: 573, 5: 557, 6: 385, 7: 543, 8: 227, 9: 791}, 9: {0: 499, 1: 295, 2: 609, 3: 302, 4: 531, 5: 520, 6: 515, 7: 749, 8: 472, 9: 500}}
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 2.160:  20%|██        | 1/5 [00:04<00:16,  4.22s/it]Local Pariticipant 7 loss = 2.067:  40%|████      | 2/5 [00:07<00:10,  3.48s/it]Local Pariticipant 7 loss = 2.002:  60%|██████    | 3/5 [00:10<00:06,  3.37s/it]Local Pariticipant 7 loss = 1.944:  80%|████████  | 4/5 [00:13<00:03,  3.32s/it]Local Pariticipant 7 loss = 1.960: 100%|██████████| 5/5 [00:17<00:00,  3.48s/it]Local Pariticipant 7 loss = 1.960: 100%|██████████| 5/5 [00:17<00:00,  3.49s/it]
+The 0 Communcation Accuracy: 41.83  Best Accuracy: 41.83 Method: fedfix
+[41.83]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.900:  20%|██        | 1/5 [00:03<00:14,  3.64s/it]Local Pariticipant 7 loss = 1.830:  40%|████      | 2/5 [00:06<00:09,  3.20s/it]Local Pariticipant 7 loss = 1.854:  60%|██████    | 3/5 [00:09<00:05,  2.96s/it]Local Pariticipant 7 loss = 1.773:  80%|████████  | 4/5 [00:12<00:03,  3.14s/it]Local Pariticipant 7 loss = 1.783: 100%|██████████| 5/5 [00:16<00:00,  3.27s/it]Local Pariticipant 7 loss = 1.783: 100%|██████████| 5/5 [00:16<00:00,  3.22s/it]
+The 1 Communcation Accuracy: 50.25  Best Accuracy: 50.25 Method: fedfix
+[50.25]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.758:  20%|██        | 1/5 [00:03<00:13,  3.35s/it]Local Pariticipant 7 loss = 1.751:  40%|████      | 2/5 [00:06<00:09,  3.04s/it]Local Pariticipant 7 loss = 1.677:  60%|██████    | 3/5 [00:08<00:05,  2.89s/it]Local Pariticipant 7 loss = 1.661:  80%|████████  | 4/5 [00:12<00:03,  3.11s/it]Local Pariticipant 7 loss = 1.622: 100%|██████████| 5/5 [00:15<00:00,  3.25s/it]Local Pariticipant 7 loss = 1.622: 100%|██████████| 5/5 [00:15<00:00,  3.17s/it]
+The 2 Communcation Accuracy: 52.27  Best Accuracy: 52.27 Method: fedfix
+[52.27]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.630:  20%|██        | 1/5 [00:03<00:12,  3.02s/it]Local Pariticipant 7 loss = 1.579:  40%|████      | 2/5 [00:06<00:09,  3.00s/it]Local Pariticipant 7 loss = 1.554:  60%|██████    | 3/5 [00:09<00:06,  3.28s/it]Local Pariticipant 7 loss = 1.533:  80%|████████  | 4/5 [00:13<00:03,  3.37s/it]Local Pariticipant 7 loss = 1.511: 100%|██████████| 5/5 [00:16<00:00,  3.43s/it]Local Pariticipant 7 loss = 1.511: 100%|██████████| 5/5 [00:16<00:00,  3.34s/it]
+The 3 Communcation Accuracy: 52.69  Best Accuracy: 52.69 Method: fedfix
+[52.69]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.485:  20%|██        | 1/5 [00:02<00:10,  2.74s/it]Local Pariticipant 7 loss = 1.486:  40%|████      | 2/5 [00:05<00:08,  2.94s/it]Local Pariticipant 7 loss = 1.470:  60%|██████    | 3/5 [00:08<00:06,  3.04s/it]Local Pariticipant 7 loss = 1.473:  80%|████████  | 4/5 [00:12<00:03,  3.06s/it]Local Pariticipant 7 loss = 1.455: 100%|██████████| 5/5 [00:15<00:00,  3.13s/it]Local Pariticipant 7 loss = 1.455: 100%|██████████| 5/5 [00:15<00:00,  3.07s/it]
+The 4 Communcation Accuracy: 53.87  Best Accuracy: 53.87 Method: fedfix
+[53.87]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.458:  20%|██        | 1/5 [00:03<00:12,  3.20s/it]Local Pariticipant 7 loss = 1.438:  40%|████      | 2/5 [00:06<00:09,  3.19s/it]Local Pariticipant 7 loss = 1.448:  60%|██████    | 3/5 [00:09<00:06,  3.08s/it]Local Pariticipant 7 loss = 1.434:  80%|████████  | 4/5 [00:12<00:02,  2.92s/it]Local Pariticipant 7 loss = 1.432: 100%|██████████| 5/5 [00:15<00:00,  2.96s/it]Local Pariticipant 7 loss = 1.432: 100%|██████████| 5/5 [00:15<00:00,  3.01s/it]
+The 5 Communcation Accuracy: 53.95  Best Accuracy: 53.95 Method: fedfix
+[53.95]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.438:  20%|██        | 1/5 [00:03<00:12,  3.19s/it]Local Pariticipant 7 loss = 1.432:  40%|████      | 2/5 [00:06<00:09,  3.32s/it]Local Pariticipant 7 loss = 1.431:  60%|██████    | 3/5 [00:09<00:06,  3.07s/it]Local Pariticipant 7 loss = 1.426:  80%|████████  | 4/5 [00:12<00:03,  3.17s/it]Local Pariticipant 7 loss = 1.417: 100%|██████████| 5/5 [00:16<00:00,  3.28s/it]Local Pariticipant 7 loss = 1.417: 100%|██████████| 5/5 [00:16<00:00,  3.24s/it]
+The 6 Communcation Accuracy: 54.63  Best Accuracy: 54.63 Method: fedfix
+[54.63]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.414:  20%|██        | 1/5 [00:03<00:14,  3.52s/it]Local Pariticipant 7 loss = 1.421:  40%|████      | 2/5 [00:06<00:09,  3.27s/it]Local Pariticipant 7 loss = 1.423:  60%|██████    | 3/5 [00:10<00:06,  3.45s/it]Local Pariticipant 7 loss = 1.420:  80%|████████  | 4/5 [00:13<00:03,  3.50s/it]Local Pariticipant 7 loss = 1.420: 100%|██████████| 5/5 [00:17<00:00,  3.54s/it]Local Pariticipant 7 loss = 1.420: 100%|██████████| 5/5 [00:17<00:00,  3.49s/it]
+The 7 Communcation Accuracy: 53.91  Best Accuracy: 54.63 Method: fedfix
+[53.91]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.413:  20%|██        | 1/5 [00:03<00:12,  3.03s/it]Local Pariticipant 7 loss = 1.412:  40%|████      | 2/5 [00:06<00:09,  3.06s/it]Local Pariticipant 7 loss = 1.415:  60%|██████    | 3/5 [00:09<00:06,  3.09s/it]Local Pariticipant 7 loss = 1.412:  80%|████████  | 4/5 [00:12<00:03,  3.08s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:15<00:00,  3.17s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:15<00:00,  3.13s/it]
+The 8 Communcation Accuracy: 55.23  Best Accuracy: 55.23 Method: fedfix
+[55.23]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.412:  20%|██        | 1/5 [00:03<00:12,  3.24s/it]Local Pariticipant 7 loss = 1.410:  40%|████      | 2/5 [00:06<00:10,  3.37s/it]Local Pariticipant 7 loss = 1.408:  60%|██████    | 3/5 [00:09<00:06,  3.29s/it]Local Pariticipant 7 loss = 1.405:  80%|████████  | 4/5 [00:13<00:03,  3.31s/it]Local Pariticipant 7 loss = 1.405: 100%|██████████| 5/5 [00:16<00:00,  3.28s/it]Local Pariticipant 7 loss = 1.405: 100%|██████████| 5/5 [00:16<00:00,  3.29s/it]
+The 9 Communcation Accuracy: 54.09  Best Accuracy: 55.23 Method: fedfix
+[54.09]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.411:  20%|██        | 1/5 [00:03<00:12,  3.11s/it]Local Pariticipant 7 loss = 1.414:  40%|████      | 2/5 [00:05<00:08,  2.91s/it]Local Pariticipant 7 loss = 1.411:  60%|██████    | 3/5 [00:08<00:05,  2.81s/it]Local Pariticipant 7 loss = 1.411:  80%|████████  | 4/5 [00:11<00:02,  2.99s/it]Local Pariticipant 7 loss = 1.402: 100%|██████████| 5/5 [00:14<00:00,  3.01s/it]Local Pariticipant 7 loss = 1.402: 100%|██████████| 5/5 [00:14<00:00,  2.98s/it]
+The 10 Communcation Accuracy: 54.27  Best Accuracy: 55.23 Method: fedfix
+[54.27]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.404:  20%|██        | 1/5 [00:02<00:10,  2.72s/it]Local Pariticipant 7 loss = 1.405:  40%|████      | 2/5 [00:05<00:08,  2.74s/it]Local Pariticipant 7 loss = 1.410:  60%|██████    | 3/5 [00:08<00:05,  2.72s/it]Local Pariticipant 7 loss = 1.401:  80%|████████  | 4/5 [00:10<00:02,  2.71s/it]Local Pariticipant 7 loss = 1.409: 100%|██████████| 5/5 [00:14<00:00,  2.87s/it]Local Pariticipant 7 loss = 1.409: 100%|██████████| 5/5 [00:14<00:00,  2.80s/it]
+The 11 Communcation Accuracy: 54.3  Best Accuracy: 55.23 Method: fedfix
+[54.3]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.403:  20%|██        | 1/5 [00:02<00:10,  2.68s/it]Local Pariticipant 7 loss = 1.399:  40%|████      | 2/5 [00:05<00:08,  2.80s/it]Local Pariticipant 7 loss = 1.399:  60%|██████    | 3/5 [00:08<00:05,  2.78s/it]Local Pariticipant 7 loss = 1.407:  80%|████████  | 4/5 [00:11<00:02,  2.90s/it]Local Pariticipant 7 loss = 1.407: 100%|██████████| 5/5 [00:14<00:00,  3.06s/it]Local Pariticipant 7 loss = 1.407: 100%|██████████| 5/5 [00:14<00:00,  2.95s/it]
+The 12 Communcation Accuracy: 54.45  Best Accuracy: 55.23 Method: fedfix
+[54.45]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.412:  20%|██        | 1/5 [00:03<00:14,  3.57s/it]Local Pariticipant 7 loss = 1.400:  40%|████      | 2/5 [00:07<00:10,  3.53s/it]Local Pariticipant 7 loss = 1.401:  60%|██████    | 3/5 [00:09<00:06,  3.20s/it]Local Pariticipant 7 loss = 1.404:  80%|████████  | 4/5 [00:12<00:03,  3.14s/it]Local Pariticipant 7 loss = 1.397: 100%|██████████| 5/5 [00:16<00:00,  3.20s/it]Local Pariticipant 7 loss = 1.397: 100%|██████████| 5/5 [00:16<00:00,  3.25s/it]
+The 13 Communcation Accuracy: 53.74  Best Accuracy: 55.23 Method: fedfix
+[53.74]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.400:  20%|██        | 1/5 [00:03<00:13,  3.44s/it]Local Pariticipant 7 loss = 1.403:  40%|████      | 2/5 [00:06<00:09,  3.15s/it]Local Pariticipant 7 loss = 1.397:  60%|██████    | 3/5 [00:09<00:05,  2.97s/it]Local Pariticipant 7 loss = 1.399:  80%|████████  | 4/5 [00:12<00:02,  2.94s/it]Local Pariticipant 7 loss = 1.398: 100%|██████████| 5/5 [00:15<00:00,  3.10s/it]Local Pariticipant 7 loss = 1.398: 100%|██████████| 5/5 [00:15<00:00,  3.08s/it]
+The 14 Communcation Accuracy: 55.33  Best Accuracy: 55.33 Method: fedfix
+[55.33]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.395:  20%|██        | 1/5 [00:02<00:10,  2.74s/it]Local Pariticipant 7 loss = 1.398:  40%|████      | 2/5 [00:05<00:08,  2.76s/it]Local Pariticipant 7 loss = 1.396:  60%|██████    | 3/5 [00:09<00:06,  3.20s/it]Local Pariticipant 7 loss = 1.401:  80%|████████  | 4/5 [00:12<00:03,  3.36s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.43s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.28s/it]
+The 15 Communcation Accuracy: 54.05  Best Accuracy: 55.33 Method: fedfix
+[54.05]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.394:  20%|██        | 1/5 [00:02<00:11,  2.76s/it]Local Pariticipant 7 loss = 1.400:  40%|████      | 2/5 [00:05<00:08,  2.86s/it]Local Pariticipant 7 loss = 1.397:  60%|██████    | 3/5 [00:08<00:06,  3.01s/it]Local Pariticipant 7 loss = 1.394:  80%|████████  | 4/5 [00:12<00:03,  3.06s/it]Local Pariticipant 7 loss = 1.400: 100%|██████████| 5/5 [00:15<00:00,  3.11s/it]Local Pariticipant 7 loss = 1.400: 100%|██████████| 5/5 [00:15<00:00,  3.04s/it]
+The 16 Communcation Accuracy: 53.9  Best Accuracy: 55.33 Method: fedfix
+[53.9]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.394:  20%|██        | 1/5 [00:03<00:14,  3.59s/it]Local Pariticipant 7 loss = 1.396:  40%|████      | 2/5 [00:07<00:10,  3.51s/it]Local Pariticipant 7 loss = 1.397:  60%|██████    | 3/5 [00:10<00:06,  3.32s/it]Local Pariticipant 7 loss = 1.397:  80%|████████  | 4/5 [00:12<00:03,  3.09s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.11s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.20s/it]
+The 17 Communcation Accuracy: 54.46  Best Accuracy: 55.33 Method: fedfix
+[54.46]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.393:  20%|██        | 1/5 [00:03<00:12,  3.15s/it]Local Pariticipant 7 loss = 1.394:  40%|████      | 2/5 [00:06<00:09,  3.15s/it]Local Pariticipant 7 loss = 1.393:  60%|██████    | 3/5 [00:09<00:06,  3.04s/it]Local Pariticipant 7 loss = 1.395:  80%|████████  | 4/5 [00:12<00:03,  3.00s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:15<00:00,  3.15s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:15<00:00,  3.11s/it]
+The 18 Communcation Accuracy: 54.45  Best Accuracy: 55.33 Method: fedfix
+[54.45]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.390:  20%|██        | 1/5 [00:03<00:12,  3.12s/it]Local Pariticipant 7 loss = 1.394:  40%|████      | 2/5 [00:05<00:08,  2.92s/it]Local Pariticipant 7 loss = 1.391:  60%|██████    | 3/5 [00:09<00:06,  3.19s/it]Local Pariticipant 7 loss = 1.396:  80%|████████  | 4/5 [00:12<00:03,  3.26s/it]Local Pariticipant 7 loss = 1.391: 100%|██████████| 5/5 [00:16<00:00,  3.36s/it]Local Pariticipant 7 loss = 1.391: 100%|██████████| 5/5 [00:16<00:00,  3.26s/it]
+The 19 Communcation Accuracy: 54.89  Best Accuracy: 55.33 Method: fedfix
+[54.89]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.393:  20%|██        | 1/5 [00:02<00:10,  2.74s/it]Local Pariticipant 7 loss = 1.395:  40%|████      | 2/5 [00:05<00:08,  2.87s/it]Local Pariticipant 7 loss = 1.395:  60%|██████    | 3/5 [00:08<00:05,  2.98s/it]Local Pariticipant 7 loss = 1.394:  80%|████████  | 4/5 [00:12<00:03,  3.06s/it]Local Pariticipant 7 loss = 1.390: 100%|██████████| 5/5 [00:15<00:00,  3.09s/it]Local Pariticipant 7 loss = 1.390: 100%|██████████| 5/5 [00:15<00:00,  3.03s/it]
+The 20 Communcation Accuracy: 53.96  Best Accuracy: 55.33 Method: fedfix
+[53.96]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.391:  20%|██        | 1/5 [00:03<00:12,  3.21s/it]Local Pariticipant 7 loss = 1.393:  40%|████      | 2/5 [00:06<00:09,  3.25s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:09<00:06,  3.23s/it]Local Pariticipant 7 loss = 1.390:  80%|████████  | 4/5 [00:12<00:03,  3.18s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.21s/it]Local Pariticipant 7 loss = 1.393: 100%|██████████| 5/5 [00:16<00:00,  3.21s/it]
+The 21 Communcation Accuracy: 53.22  Best Accuracy: 55.33 Method: fedfix
+[53.22]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.397:  20%|██        | 1/5 [00:03<00:12,  3.22s/it]Local Pariticipant 7 loss = 1.393:  40%|████      | 2/5 [00:06<00:09,  3.20s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:09<00:06,  3.02s/it]Local Pariticipant 7 loss = 1.388:  80%|████████  | 4/5 [00:12<00:03,  3.12s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:15<00:00,  3.19s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:15<00:00,  3.16s/it]
+The 22 Communcation Accuracy: 54.81  Best Accuracy: 55.33 Method: fedfix
+[54.81]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.388:  20%|██        | 1/5 [00:03<00:13,  3.34s/it]Local Pariticipant 7 loss = 1.390:  40%|████      | 2/5 [00:06<00:08,  2.96s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:08<00:05,  2.94s/it]Local Pariticipant 7 loss = 1.390:  80%|████████  | 4/5 [00:11<00:02,  2.92s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:14<00:00,  2.98s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:14<00:00,  2.99s/it]
+The 23 Communcation Accuracy: 54.01  Best Accuracy: 55.33 Method: fedfix
+[54.01]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.390:  20%|██        | 1/5 [00:02<00:11,  2.94s/it]Local Pariticipant 7 loss = 1.395:  40%|████      | 2/5 [00:05<00:09,  3.01s/it]Local Pariticipant 7 loss = 1.393:  60%|██████    | 3/5 [00:09<00:06,  3.03s/it]Local Pariticipant 7 loss = 1.395:  80%|████████  | 4/5 [00:12<00:03,  3.04s/it]Local Pariticipant 7 loss = 1.390: 100%|██████████| 5/5 [00:15<00:00,  3.04s/it]Local Pariticipant 7 loss = 1.390: 100%|██████████| 5/5 [00:15<00:00,  3.03s/it]
+The 24 Communcation Accuracy: 53.97  Best Accuracy: 55.33 Method: fedfix
+[53.97]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.393:  20%|██        | 1/5 [00:02<00:11,  2.79s/it]Local Pariticipant 7 loss = 1.398:  40%|████      | 2/5 [00:05<00:08,  2.79s/it]Local Pariticipant 7 loss = 1.388:  60%|██████    | 3/5 [00:08<00:05,  2.78s/it]Local Pariticipant 7 loss = 1.389:  80%|████████  | 4/5 [00:11<00:02,  2.75s/it]Local Pariticipant 7 loss = 1.394: 100%|██████████| 5/5 [00:14<00:00,  2.98s/it]Local Pariticipant 7 loss = 1.394: 100%|██████████| 5/5 [00:14<00:00,  2.89s/it]
+The 25 Communcation Accuracy: 54.53  Best Accuracy: 55.33 Method: fedfix
+[54.53]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.398:  20%|██        | 1/5 [00:03<00:12,  3.07s/it]Local Pariticipant 7 loss = 1.390:  40%|████      | 2/5 [00:06<00:09,  3.07s/it]Local Pariticipant 7 loss = 1.394:  60%|██████    | 3/5 [00:08<00:05,  2.90s/it]Local Pariticipant 7 loss = 1.398:  80%|████████  | 4/5 [00:11<00:02,  2.93s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:15<00:00,  3.12s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:15<00:00,  3.05s/it]
+The 26 Communcation Accuracy: 53.0  Best Accuracy: 55.33 Method: fedfix
+[53.0]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.394:  20%|██        | 1/5 [00:03<00:12,  3.20s/it]Local Pariticipant 7 loss = 1.400:  40%|████      | 2/5 [00:06<00:09,  3.11s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:09<00:06,  3.08s/it]Local Pariticipant 7 loss = 1.395:  80%|████████  | 4/5 [00:12<00:03,  3.24s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:16<00:00,  3.41s/it]Local Pariticipant 7 loss = 1.392: 100%|██████████| 5/5 [00:16<00:00,  3.30s/it]
+The 27 Communcation Accuracy: 54.39  Best Accuracy: 55.33 Method: fedfix
+[54.39]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.392:  20%|██        | 1/5 [00:02<00:11,  3.00s/it]Local Pariticipant 7 loss = 1.392:  40%|████      | 2/5 [00:05<00:08,  2.94s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:08<00:05,  2.96s/it]Local Pariticipant 7 loss = 1.390:  80%|████████  | 4/5 [00:11<00:02,  2.99s/it]Local Pariticipant 7 loss = 1.398: 100%|██████████| 5/5 [00:14<00:00,  3.01s/it]Local Pariticipant 7 loss = 1.398: 100%|██████████| 5/5 [00:14<00:00,  2.99s/it]
+The 28 Communcation Accuracy: 54.0  Best Accuracy: 55.33 Method: fedfix
+[54.0]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.397:  20%|██        | 1/5 [00:03<00:12,  3.07s/it]Local Pariticipant 7 loss = 1.393:  40%|████      | 2/5 [00:06<00:10,  3.37s/it]Local Pariticipant 7 loss = 1.393:  60%|██████    | 3/5 [00:10<00:06,  3.37s/it]Local Pariticipant 7 loss = 1.392:  80%|████████  | 4/5 [00:13<00:03,  3.38s/it]Local Pariticipant 7 loss = 1.391: 100%|██████████| 5/5 [00:17<00:00,  3.48s/it]Local Pariticipant 7 loss = 1.391: 100%|██████████| 5/5 [00:17<00:00,  3.41s/it]
+The 29 Communcation Accuracy: 53.4  Best Accuracy: 55.33 Method: fedfix
+[53.4]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.399:  20%|██        | 1/5 [00:03<00:14,  3.58s/it]Local Pariticipant 7 loss = 1.400:  40%|████      | 2/5 [00:07<00:10,  3.51s/it]Local Pariticipant 7 loss = 1.396:  60%|██████    | 3/5 [00:10<00:07,  3.51s/it]Local Pariticipant 7 loss = 1.398:  80%|████████  | 4/5 [00:13<00:03,  3.43s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:16<00:00,  3.28s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:16<00:00,  3.38s/it]
+The 30 Communcation Accuracy: 52.54  Best Accuracy: 55.33 Method: fedfix
+[52.54]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.400:  20%|██        | 1/5 [00:03<00:12,  3.15s/it]Local Pariticipant 7 loss = 1.401:  40%|████      | 2/5 [00:06<00:10,  3.40s/it]Local Pariticipant 7 loss = 1.390:  60%|██████    | 3/5 [00:10<00:06,  3.37s/it]Local Pariticipant 7 loss = 1.398:  80%|████████  | 4/5 [00:13<00:03,  3.29s/it]Local Pariticipant 7 loss = 1.394: 100%|██████████| 5/5 [00:16<00:00,  3.37s/it]Local Pariticipant 7 loss = 1.394: 100%|██████████| 5/5 [00:16<00:00,  3.34s/it]
+The 31 Communcation Accuracy: 54.04  Best Accuracy: 55.33 Method: fedfix
+[54.04]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.403:  20%|██        | 1/5 [00:03<00:12,  3.18s/it]Local Pariticipant 7 loss = 1.411:  40%|████      | 2/5 [00:06<00:09,  3.12s/it]Local Pariticipant 7 loss = 1.394:  60%|██████    | 3/5 [00:08<00:05,  2.94s/it]Local Pariticipant 7 loss = 1.403:  80%|████████  | 4/5 [00:12<00:03,  3.01s/it]Local Pariticipant 7 loss = 1.402: 100%|██████████| 5/5 [00:15<00:00,  3.06s/it]Local Pariticipant 7 loss = 1.402: 100%|██████████| 5/5 [00:15<00:00,  3.05s/it]
+The 32 Communcation Accuracy: 53.62  Best Accuracy: 55.33 Method: fedfix
+[53.62]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.411:  20%|██        | 1/5 [00:03<00:12,  3.16s/it]Local Pariticipant 7 loss = 1.390:  40%|████      | 2/5 [00:06<00:10,  3.39s/it]Local Pariticipant 7 loss = 1.406:  60%|██████    | 3/5 [00:10<00:06,  3.46s/it]Local Pariticipant 7 loss = 1.404:  80%|████████  | 4/5 [00:13<00:03,  3.51s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:17<00:00,  3.49s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:17<00:00,  3.46s/it]
+The 33 Communcation Accuracy: 53.8  Best Accuracy: 55.33 Method: fedfix
+[53.8]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.397:  20%|██        | 1/5 [00:03<00:13,  3.49s/it]Local Pariticipant 7 loss = 1.398:  40%|████      | 2/5 [00:06<00:10,  3.50s/it]Local Pariticipant 7 loss = 1.392:  60%|██████    | 3/5 [00:10<00:06,  3.45s/it]Local Pariticipant 7 loss = 1.400:  80%|████████  | 4/5 [00:13<00:03,  3.35s/it]Local Pariticipant 7 loss = 1.399: 100%|██████████| 5/5 [00:16<00:00,  3.19s/it]Local Pariticipant 7 loss = 1.399: 100%|██████████| 5/5 [00:16<00:00,  3.30s/it]
+The 34 Communcation Accuracy: 53.52  Best Accuracy: 55.33 Method: fedfix
+[53.52]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.393:  20%|██        | 1/5 [00:03<00:13,  3.42s/it]Local Pariticipant 7 loss = 1.406:  40%|████      | 2/5 [00:06<00:10,  3.43s/it]Local Pariticipant 7 loss = 1.416:  60%|██████    | 3/5 [00:09<00:06,  3.23s/it]Local Pariticipant 7 loss = 1.401:  80%|████████  | 4/5 [00:13<00:03,  3.34s/it]Local Pariticipant 7 loss = 1.421: 100%|██████████| 5/5 [00:16<00:00,  3.38s/it]Local Pariticipant 7 loss = 1.421: 100%|██████████| 5/5 [00:16<00:00,  3.36s/it]
+The 35 Communcation Accuracy: 53.65  Best Accuracy: 55.33 Method: fedfix
+[53.65]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.416:  20%|██        | 1/5 [00:03<00:12,  3.19s/it]Local Pariticipant 7 loss = 1.398:  40%|████      | 2/5 [00:05<00:08,  2.93s/it]Local Pariticipant 7 loss = 1.411:  60%|██████    | 3/5 [00:08<00:05,  2.85s/it]Local Pariticipant 7 loss = 1.405:  80%|████████  | 4/5 [00:11<00:02,  2.88s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:14<00:00,  2.93s/it]Local Pariticipant 7 loss = 1.403: 100%|██████████| 5/5 [00:14<00:00,  2.93s/it]
+The 36 Communcation Accuracy: 54.65  Best Accuracy: 55.33 Method: fedfix
+[54.65]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.407:  20%|██        | 1/5 [00:03<00:13,  3.40s/it]Local Pariticipant 7 loss = 1.418:  40%|████      | 2/5 [00:06<00:09,  3.06s/it]Local Pariticipant 7 loss = 1.408:  60%|██████    | 3/5 [00:09<00:06,  3.18s/it]Local Pariticipant 7 loss = 1.405:  80%|████████  | 4/5 [00:12<00:03,  3.27s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:16<00:00,  3.27s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:16<00:00,  3.25s/it]
+The 37 Communcation Accuracy: 51.58  Best Accuracy: 55.33 Method: fedfix
+[51.58]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.420:  20%|██        | 1/5 [00:02<00:11,  2.81s/it]Local Pariticipant 7 loss = 1.409:  40%|████      | 2/5 [00:05<00:08,  2.81s/it]Local Pariticipant 7 loss = 1.407:  60%|██████    | 3/5 [00:08<00:05,  2.82s/it]Local Pariticipant 7 loss = 1.407:  80%|████████  | 4/5 [00:11<00:02,  2.77s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:13<00:00,  2.78s/it]Local Pariticipant 7 loss = 1.418: 100%|██████████| 5/5 [00:13<00:00,  2.79s/it]
+The 38 Communcation Accuracy: 53.41  Best Accuracy: 55.33 Method: fedfix
+[53.41]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.412:  20%|██        | 1/5 [00:02<00:10,  2.75s/it]Local Pariticipant 7 loss = 1.415:  40%|████      | 2/5 [00:06<00:09,  3.06s/it]Local Pariticipant 7 loss = 1.415:  60%|██████    | 3/5 [00:08<00:05,  2.92s/it]Local Pariticipant 7 loss = 1.421:  80%|████████  | 4/5 [00:11<00:02,  2.86s/it]Local Pariticipant 7 loss = 1.420: 100%|██████████| 5/5 [00:14<00:00,  3.06s/it]Local Pariticipant 7 loss = 1.420: 100%|██████████| 5/5 [00:14<00:00,  2.99s/it]
+The 39 Communcation Accuracy: 53.06  Best Accuracy: 55.33 Method: fedfix
+[53.06]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.414:  20%|██        | 1/5 [00:03<00:12,  3.13s/it]Local Pariticipant 7 loss = 1.427:  40%|████      | 2/5 [00:06<00:09,  3.08s/it]Local Pariticipant 7 loss = 1.415:  60%|██████    | 3/5 [00:09<00:06,  3.14s/it]Local Pariticipant 7 loss = 1.418:  80%|████████  | 4/5 [00:12<00:03,  3.13s/it]Local Pariticipant 7 loss = 1.408: 100%|██████████| 5/5 [00:15<00:00,  3.10s/it]Local Pariticipant 7 loss = 1.408: 100%|██████████| 5/5 [00:15<00:00,  3.11s/it]
+The 40 Communcation Accuracy: 51.35  Best Accuracy: 55.33 Method: fedfix
+[51.35]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.433:  20%|██        | 1/5 [00:03<00:14,  3.71s/it]Local Pariticipant 7 loss = 1.425:  40%|████      | 2/5 [00:07<00:10,  3.57s/it]Local Pariticipant 7 loss = 1.439:  60%|██████    | 3/5 [00:10<00:07,  3.60s/it]Local Pariticipant 7 loss = 1.420:  80%|████████  | 4/5 [00:14<00:03,  3.65s/it]Local Pariticipant 7 loss = 1.415: 100%|██████████| 5/5 [00:17<00:00,  3.55s/it]Local Pariticipant 7 loss = 1.415: 100%|██████████| 5/5 [00:17<00:00,  3.59s/it]
+The 41 Communcation Accuracy: 53.89  Best Accuracy: 55.33 Method: fedfix
+[53.89]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.421:  20%|██        | 1/5 [00:03<00:14,  3.58s/it]Local Pariticipant 7 loss = 1.450:  40%|████      | 2/5 [00:07<00:10,  3.50s/it]Local Pariticipant 7 loss = 1.446:  60%|██████    | 3/5 [00:10<00:06,  3.42s/it]Local Pariticipant 7 loss = 1.432:  80%|████████  | 4/5 [00:13<00:03,  3.51s/it]Local Pariticipant 7 loss = 1.428: 100%|██████████| 5/5 [00:16<00:00,  3.24s/it]Local Pariticipant 7 loss = 1.428: 100%|██████████| 5/5 [00:16<00:00,  3.35s/it]
+The 42 Communcation Accuracy: 52.57  Best Accuracy: 55.33 Method: fedfix
+[52.57]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.452:  20%|██        | 1/5 [00:03<00:14,  3.56s/it]Local Pariticipant 7 loss = 1.449:  40%|████      | 2/5 [00:06<00:10,  3.37s/it]Local Pariticipant 7 loss = 1.446:  60%|██████    | 3/5 [00:10<00:06,  3.33s/it]Local Pariticipant 7 loss = 1.431:  80%|████████  | 4/5 [00:13<00:03,  3.23s/it]Local Pariticipant 7 loss = 1.453: 100%|██████████| 5/5 [00:16<00:00,  3.33s/it]Local Pariticipant 7 loss = 1.453: 100%|██████████| 5/5 [00:16<00:00,  3.33s/it]
+The 43 Communcation Accuracy: 53.01  Best Accuracy: 55.33 Method: fedfix
+[53.01]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.420:  20%|██        | 1/5 [00:03<00:13,  3.31s/it]Local Pariticipant 7 loss = 1.467:  40%|████      | 2/5 [00:06<00:09,  3.00s/it]Local Pariticipant 7 loss = 1.443:  60%|██████    | 3/5 [00:08<00:05,  2.87s/it]Local Pariticipant 7 loss = 1.446:  80%|████████  | 4/5 [00:11<00:02,  2.82s/it]Local Pariticipant 7 loss = 1.447: 100%|██████████| 5/5 [00:14<00:00,  2.79s/it]Local Pariticipant 7 loss = 1.447: 100%|██████████| 5/5 [00:14<00:00,  2.85s/it]
+The 44 Communcation Accuracy: 53.07  Best Accuracy: 55.33 Method: fedfix
+[53.07]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.447:  20%|██        | 1/5 [00:02<00:11,  2.93s/it]Local Pariticipant 7 loss = 1.450:  40%|████      | 2/5 [00:06<00:09,  3.25s/it]Local Pariticipant 7 loss = 1.453:  60%|██████    | 3/5 [00:09<00:06,  3.30s/it]Local Pariticipant 7 loss = 1.444:  80%|████████  | 4/5 [00:13<00:03,  3.31s/it]Local Pariticipant 7 loss = 1.462: 100%|██████████| 5/5 [00:16<00:00,  3.38s/it]Local Pariticipant 7 loss = 1.462: 100%|██████████| 5/5 [00:16<00:00,  3.32s/it]
+The 45 Communcation Accuracy: 52.12  Best Accuracy: 55.33 Method: fedfix
+[52.12]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.477:  20%|██        | 1/5 [00:03<00:13,  3.26s/it]Local Pariticipant 7 loss = 1.478:  40%|████      | 2/5 [00:06<00:10,  3.37s/it]Local Pariticipant 7 loss = 1.474:  60%|██████    | 3/5 [00:10<00:06,  3.48s/it]Local Pariticipant 7 loss = 1.460:  80%|████████  | 4/5 [00:13<00:03,  3.53s/it]Local Pariticipant 7 loss = 1.466: 100%|██████████| 5/5 [00:16<00:00,  3.28s/it]Local Pariticipant 7 loss = 1.466: 100%|██████████| 5/5 [00:16<00:00,  3.35s/it]
+The 46 Communcation Accuracy: 52.02  Best Accuracy: 55.33 Method: fedfix
+[52.02]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.464:  20%|██        | 1/5 [00:03<00:13,  3.35s/it]Local Pariticipant 7 loss = 1.462:  40%|████      | 2/5 [00:06<00:10,  3.41s/it]Local Pariticipant 7 loss = 1.470:  60%|██████    | 3/5 [00:10<00:06,  3.38s/it]Local Pariticipant 7 loss = 1.462:  80%|████████  | 4/5 [00:13<00:03,  3.18s/it]Local Pariticipant 7 loss = 1.470: 100%|██████████| 5/5 [00:16<00:00,  3.16s/it]Local Pariticipant 7 loss = 1.470: 100%|██████████| 5/5 [00:16<00:00,  3.23s/it]
+The 47 Communcation Accuracy: 51.31  Best Accuracy: 55.33 Method: fedfix
+[51.31]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.488:  20%|██        | 1/5 [00:03<00:13,  3.35s/it]Local Pariticipant 7 loss = 1.467:  40%|████      | 2/5 [00:06<00:09,  3.32s/it]Local Pariticipant 7 loss = 1.455:  60%|██████    | 3/5 [00:09<00:06,  3.03s/it]Local Pariticipant 7 loss = 1.477:  80%|████████  | 4/5 [00:12<00:03,  3.01s/it]Local Pariticipant 7 loss = 1.490: 100%|██████████| 5/5 [00:15<00:00,  3.03s/it]Local Pariticipant 7 loss = 1.490: 100%|██████████| 5/5 [00:15<00:00,  3.07s/it]
+The 48 Communcation Accuracy: 52.99  Best Accuracy: 55.33 Method: fedfix
+[52.99]
+
+  0%|          | 0/5 [00:00<?, ?it/s]Local Pariticipant 7 loss = 1.475:  20%|██        | 1/5 [00:02<00:11,  2.81s/it]Local Pariticipant 7 loss = 1.511:  40%|████      | 2/5 [00:05<00:09,  3.01s/it]Local Pariticipant 7 loss = 1.499:  60%|██████    | 3/5 [00:09<00:06,  3.08s/it]Local Pariticipant 7 loss = 1.510:  80%|████████  | 4/5 [00:12<00:03,  3.18s/it]Local Pariticipant 7 loss = 1.498: 100%|██████████| 5/5 [00:15<00:00,  3.25s/it]Local Pariticipant 7 loss = 1.498: 100%|██████████| 5/5 [00:15<00:00,  3.17s/it]
+The 49 Communcation Accuracy: 52.11  Best Accuracy: 55.33 Method: fedfix
+[52.11]
+
